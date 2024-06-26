@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.Entity;
+import javax.persistence.Table;
 import java.time.LocalTime;
 import java.util.Date;
 
@@ -13,6 +14,7 @@ import java.util.Date;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Flight extends Abstractor {
+    private String flightId;
     private String flightNumber;
     private String operationAirlines;
     private String departureCity;

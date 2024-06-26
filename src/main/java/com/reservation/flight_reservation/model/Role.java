@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.Entity;
 import javax.persistence.ManyToMany;
+import javax.persistence.Table;
 import java.util.Set;
 
 @Entity
@@ -14,7 +15,7 @@ import java.util.Set;
 @NoArgsConstructor
 public class Role extends Abstractor {
 
-    private String roleType;
+    private String roleName;
 
     @ManyToMany(mappedBy = "roles")
     private Set<User> users;

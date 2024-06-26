@@ -8,6 +8,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletResponse;
+
 @RestController
 public class LoginController {
 
@@ -19,8 +22,9 @@ public class LoginController {
        return loginService.registerUser(userdata);
    }
 
-   @GetMapping("/login")
-    public User login(@RequestBody LoginDto logindata) {
-       return loginService.loginUser(logindata);
+   @PostMapping("/login")
+    public User login(@RequestBody LoginDto logindata, HttpServletResponse response) {
+       User user = loginService.loginUser(logindata);
+       return user;
    }
 }

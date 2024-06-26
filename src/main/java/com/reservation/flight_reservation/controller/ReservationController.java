@@ -4,12 +4,17 @@ import com.reservation.flight_reservation.dto.ReservationRequestDto;
 import com.reservation.flight_reservation.dto.ReservationUpdateRequestDto;
 import com.reservation.flight_reservation.model.Reservation;
 import com.reservation.flight_reservation.service.ReservationService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 
 @RestController
 public class ReservationController {
+
+    private static final Logger logger = LoggerFactory.getLogger(ReservationController.class);
+
     @Autowired
     private ReservationService reservationService;
 
@@ -20,13 +25,14 @@ public class ReservationController {
     }
 
     @GetMapping("/findReservation/{id}")
-    public Reservation findReservation(@PathVariable("id") String id) {
+    public Reservation findReservation(@PathVariable("id") Long id) {
         return reservationService.findReservationById(id);
     }
 
     @PostMapping("/updateReservation")
         public Reservation updateReservation(@RequestBody ReservationUpdateRequestDto reservationUpdateRequestDto) {
-            String id  = reservationUpdateRequestDto.getId();
+            Long id  = reservationUpdateRequestDto.getId();
+            logger.info("Finding reservation with id: {}", id);
             Reservation reservation = reservationService.findReservationById(id);
             reservation.setCheckedIn(reservationUpdateRequestDto.isCheckedIn());
             reservation.setNumberOfBags(String.valueOf(reservationUpdateRequestDto.getNumberOfBags()));

@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class ReservationUpdateRequestDto  {
-    private String id;
+    private Long id;
     private boolean checkedIn;
     private int numberOfBags;
 }
