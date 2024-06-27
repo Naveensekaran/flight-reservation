@@ -9,6 +9,8 @@ import com.reservation.flight_reservation.model.Reservation;
 import com.reservation.flight_reservation.repository.FlightRepository;
 import com.reservation.flight_reservation.repository.PassengerRepository;
 import com.reservation.flight_reservation.repository.ReservationRepository;
+import com.reservation.flight_reservation.util.EmailUtil;
+import com.reservation.flight_reservation.util.PdfGenerator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +23,8 @@ public class ReservationService {
 
     private static final Logger logger = LoggerFactory.getLogger(ReservationService.class);
 
+    private String ITINERARY_DIR = "D:\\Naveen\\";
+
     @Autowired
     private PassengerRepository passengerRepository;
 
@@ -29,6 +33,12 @@ public class ReservationService {
 
     @Autowired
     private ReservationRepository reservationRepository;
+
+    @Autowired
+    private EmailUtil emailUtil;
+
+    @Autowired
+    private PdfGenerator pdfGenerator;
 
     public Reservation bookFlight(ReservationRequestDto reservationRequest) {
         logger.info("Booking flight for passenger: {}", reservationRequest.getPassengerFirstName());
@@ -55,6 +65,14 @@ public class ReservationService {
         final Reservation savedReservation = reservationRepository.save(reservation);
 
         logger.info("Reservation created successfully with flight: {}", savedReservation.getFlight());
+
+        String filePath = ITINERARY_DIR + savedReservation.getPassenger().getFirstName()
+                + ".pdf";
+        logger.info("Generating  the itinerary");
+        pdfGenerator.generateItenary(savedReservation,filePath);
+        logger.info("Emailing the Itinerary");
+        emailUtil.sendItenary(savedReservation.getPassenger().getEmail().toString(),filePath);
+
         return savedReservation;
 
     }
